@@ -1,83 +1,79 @@
-// Merge sort
-//  step 1. Divide
-//  step 2. sort
-//  step 3. Merge
-
 #include <bits/stdc++.h>
 using namespace std;
 
-void merge(int *a, int *b, int *c, int s, int e)
+void merge(int a[], int s, int e)
 {
     int mid = (s + e) / 2;
-    int i = s, j = mid + 1, k = s;
+    int i = s;
+    int j = mid + 1;
+    int k = s;
 
-    while (i <= mid and j <= e)
+    int temp[100];
+
+    while (i <= mid && j <= e)
     {
-        if (b[i] <= c[j])
+        if (a[i] < a[j])
         {
-            a[k++] = b[i++];
+            temp[k++] = a[i++];
         }
         else
         {
-            a[k++] = c[j++];
+            temp[k++] = a[j++];
         }
     }
+
     while (i <= mid)
     {
-        a[k++] = b[i++];
+        temp[k++] = a[i++];
     }
-
     while (j <= e)
     {
-        a[k++] = c[j++];
+        temp[k++] = a[j++];
+    }
+
+    // we need to copy all the elemnents to original array
+    for (int i = s; i <= e; i++)
+    {
+        a[i] = temp[i];
     }
 }
 
-void mergeSort(int *a, int s, int e)
+void mergeSort(int a[], int s, int e)
 {
-    // Base case
+
+    // base case
     if (s >= e)
     {
         return;
     }
 
-    // Recursive Case
-    // Divide
-    int b[100], c[100];
+    // follow three steps
+    // divide
     int mid = (s + e) / 2;
-    for (int i = s; i <= mid; i++)
-    {
-        b[i] = a[i];
-    }
-    for (int i = mid + 1; i <= e; i++)
-    {
-        c[i] = a[i];
-    }
 
-    // sort -->  Pure Assumption (Recursion)
-    mergeSort(b, s, mid);
-    mergeSort(c, mid + 1, e);
+    // recursively sort the array from, s-mid and mid+1-end;
+    mergeSort(a, s, mid);
+    mergeSort(a, mid + 1, e);
 
-    // Merge
-    merge(a, b, c, s, e);
+    // Merge the two parts
+    merge(a, s, e);
 }
 
 int main()
 {
-    int a[] = {4, 1, 6, 2, 0, 5};
-    int n = sizeof(a) / sizeof(int);
-    cout << "Before Sorting" << endl;
+    int a[100];
+    int n;
+    cin >> n;
+
     for (int i = 0; i < n; i++)
     {
-        cout << a[i] << " ";
+        cin >> a[i];
     }
-    cout << endl;
+
     mergeSort(a, 0, n - 1);
 
-    cout << "After Sorting" << endl;
     for (int i = 0; i < n; i++)
     {
-        cout << a[i] << " ";
+        cout << a[i]<<" ";
     }
-    cout << endl;
 }
